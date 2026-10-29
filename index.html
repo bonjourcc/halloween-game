@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>玉楠の生日庆典</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- 开始页 -->
+  <section id="screen-start" class="screen active">
+    <div class="deco" aria-hidden="true">
+      <span class="d d1">🦇</span>
+      <span class="d d2">🎃</span>
+      <span class="d d3">✨</span>
+      <span class="d d4">🌟</span>
+      <span class="d d5">👻</span>
+      <span class="d d6">💜</span>
+    </div>
+
+    <div class="topbar">
+      <span id="bag-start" class="bag">🍬 糖果袋 0/8</span>
+    </div>
+
+    <div class="hero">
+      <span class="badge">SSR 限定 · 生日服务器</span>
+      <h1 class="title">玉楠の<br>生日庆典</h1>
+      <p class="sub">🎂 勇者玉楠的专属冒险已开启 🎃</p>
+    </div>
+
+    <div class="story">
+      <div class="log">
+        <p class="sys-line"><span class="tag tag-sys">系统</span>检测到特殊能量波动……</p>
+      </div>
+      <div class="quest">
+        <p class="quest-tag"><span class="tag tag-quest">主线</span>任务更新</p>
+        <p>任务名称：玉楠の生日庆典</p>
+        <p>任务等级：<span class="ssr">SSR限定</span></p>
+        <p class="quest-desc">任务描述：今日是勇者玉楠的诞辰之日，整个世界都在等待她的冒险启程。请收集所有祝福，解锁新一岁的隐藏剧情！</p>
+      </div>
+      <div class="announce">
+        <p><span class="tag tag-ann">公告</span>系统公告</p>
+        <p>玩家「玉楠」已成功登录【生日服务器】</p>
+        <p>当前等级：Lv.∞（无限可能）</p>
+        <p>获得永久 buff：<span class="buff">「被爱包围」</span><span class="buff">「心想事成」</span><span class="buff">「快乐加倍」</span></p>
+        <p class="end-line">——冒险，现在开始——</p>
+      </div>
+    </div>
+
+    <button id="btn-start" class="btn btn-primary btn-start">开始冒险</button>
+    <button id="btn-replay" class="btn" style="display:none">🔁 再玩一次</button>
+    <button id="btn-collection" class="link-btn">我的糖果</button>
+  </section>
+
+  <!-- 游戏页 -->
+  <section id="screen-game" class="screen">
+    <div class="game-header">
+      <span id="level-tag" class="level-tag">第 1 关</span>
+      <span id="bag-game" class="bag">🍬 糖果袋 0/8</span>
+      <button id="btn-restart" class="link-btn">重新开始</button>
+      <button id="btn-quit" class="link-btn">退出</button>
+    </div>
+    <div id="game-area" class="game-area"></div>
+    <div id="game-msg" class="game-msg"></div>
+  </section>
+
+  <!-- 过关糖果 -->
+  <section id="screen-card" class="screen">
+    <h2 class="card-title">🎉 收获一份祝福！</h2>
+    <div id="candy-name" class="candy-name"></div>
+    <div id="candy-box" class="candy-box"></div>
+    <div id="candy-desc" class="candy-desc"></div>
+    <div class="candy-note">礼物兑换糖果一颗</div>
+    <button id="btn-next" class="btn btn-primary">继续冒险</button>
+  </section>
+
+  <!-- 我的糖果 -->
+  <section id="screen-collection" class="screen">
+    <h2 class="card-title">我的糖果</h2>
+    <div id="card-list" class="card-list"></div>
+    <button id="btn-ending" class="btn btn-primary" style="display:none">查看结局 🎉</button>
+    <button id="btn-back-start" class="btn">返回首页</button>
+  </section>
+
+  <!-- 结局 -->
+  <section id="screen-ending" class="screen">
+    <h2 class="card-title">🎊 结局 · 玉楠生日快乐</h2>
+    <div id="ending-card" class="ending-card"></div>
+    <div class="video-section">
+      <p class="video-title">🎬 生日祝福影片</p>
+      <div class="video-wrap">
+        <video id="ending-video" src="assets/birthday_video.mp4" poster="assets/video_poster.jpg"
+               controls playsinline preload="metadata"></video>
+      </div>
+    </div>
+    <button id="btn-replay-ending" class="btn btn-primary">🔁 再玩一次</button>
+    <button id="btn-save" class="btn">保存生日卡</button>
+    <button id="btn-ending-back" class="btn">返回首页</button>
+  </section>
+
+</div>
+
+<!-- 背景音乐（整局循环播放） -->
+<audio id="bgm" loop preload="auto" src="assets/bgm.mp3"></audio>
+<audio id="win" preload="auto" src="assets/win.mp3"></audio>
+<button id="bgm-toggle" class="bgm-toggle" type="button" aria-label="背景音乐开关">🎵</button>
+
+<!-- 关卡失败弹窗 -->
+<div id="fail-overlay" class="fail-overlay">
+  <div class="fail-box">
+    <h3 id="fail-title">这一关还没通过 😢</h3>
+    <p id="fail-retry-note" class="fail-note"></p>
+    <button id="btn-fail-retry" class="btn btn-primary">重新开始这关</button>
+    <button id="btn-fail-skip" class="btn">继续下面的关</button>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

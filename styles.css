@@ -1,0 +1,445 @@
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #160d22;
+  color: #f3e9ff;
+  overflow-x: hidden;
+}
+#app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; }
+
+.screen { position: relative; display: none; padding: 20px 18px 40px; min-height: 100vh; flex-direction: column; align-items: center; }
+.screen.active { display: flex; }
+.screen.active > * { position: relative; z-index: 1; }
+
+/* ===== 背景音乐开关 ===== */
+.bgm-toggle {
+  position: fixed; right: 14px; bottom: 14px; z-index: 999;
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.25); cursor: pointer;
+  background: rgba(124,92,255,0.28); color: #fff; font-size: 22px;
+  display: flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.4); backdrop-filter: blur(6px);
+}
+.bgm-toggle:active { transform: scale(0.93); }
+
+/* ===== 首页 ===== */
+.deco { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.deco .d { position: absolute; opacity: .85; animation: float 4s ease-in-out infinite; }
+.d1 { top: 46px;  left: 22px; font-size: 26px; animation-delay: 0s; }
+.d2 { top: 78px;  right: 26px; font-size: 32px; animation-delay: .6s; }
+.d3 { top: 168px; left: 38px; font-size: 22px; animation-delay: 1.2s; }
+.d4 { top: 130px; right: 48px; font-size: 22px; animation-delay: .3s; }
+.d5 { bottom: 150px; left: 28px; font-size: 24px; animation-delay: .9s; }
+.d6 { bottom: 110px; right: 34px; font-size: 22px; animation-delay: 1.5s; }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+.topbar { width: 100%; max-width: 440px; display: flex; justify-content: center; margin-bottom: 6px; }
+.bag {
+  display: inline-block; padding: 6px 14px; border-radius: 20px;
+  background: rgba(255,117,24,0.15); border: 1px solid rgba(255,117,24,0.5);
+  color: #ffb877; font-size: 13px; font-weight: 700; letter-spacing: .5px;
+}
+
+.hero { text-align: center; margin: 30px 0 18px; }
+.badge {
+  display: inline-block; padding: 6px 14px; border-radius: 20px;
+  background: rgba(255,93,177,0.15); border: 1px solid rgba(255,93,177,0.5);
+  color: #ff8ad0; font-size: 13px; letter-spacing: 1px; margin-bottom: 12px;
+}
+.title {
+  font-size: 40px; line-height: 1.2; font-weight: 800; text-align: center;
+  background: linear-gradient(135deg, #ff8a3d, #ff5db1, #b07cff);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 14px rgba(255,117,24,0.45));
+}
+.sub { margin-top: 12px; font-size: 14px; color: #d9c8f5; }
+
+/* 剧情日志卡 */
+.story { width: 100%; max-width: 420px; margin-bottom: 26px; }
+.log, .quest, .announce {
+  background: #1f1233; border: 1px solid #3a2b52; border-radius: 14px;
+  padding: 14px 16px; margin-bottom: 12px; font-size: 14.5px; line-height: 1.75;
+}
+.quest { border-left: 4px solid #b07cff; }
+.announce { border-left: 4px solid #ff8a3d; }
+.sys-line { color: #7fe0a0; font-family: "Courier New", monospace; font-size: 13.5px; }
+.tag {
+  display: inline-block; font-size: 12px; padding: 1px 9px; border-radius: 6px;
+  margin-right: 7px; font-weight: 700; vertical-align: middle;
+}
+.tag-sys { background: #1c5e2e; color: #9affb0; }
+.tag-quest { background: #7a4bd6; color: #eadcff; }
+.tag-ann { background: #c98a1f; color: #fff; }
+.quest-tag { color: #ffd166; font-weight: 700; margin-bottom: 6px; }
+.ssr { color: #ff5db1; font-weight: 800; text-shadow: 0 0 8px rgba(255,93,177,0.5); }
+.quest-desc { color: #d9c8f5; }
+.buff {
+  display: inline-block; margin: 4px 6px 0 0; padding: 3px 10px; border-radius: 20px;
+  background: rgba(255,117,24,0.18); color: #ffb877; border: 1px solid rgba(255,117,24,0.4); font-size: 13px;
+}
+.end-line { margin-top: 8px; color: #ff8a3d; font-weight: 700; text-align: center; }
+
+.btn {
+  width: 100%; max-width: 320px; padding: 14px; border-radius: 12px; border: none;
+  font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 8px;
+  background: #3a2b52; color: #e9dcff;
+}
+.btn-primary { background: linear-gradient(135deg, #ff7518, #ff4d6d); color: #fff; }
+.btn:active { transform: scale(0.98); }
+.btn-start { font-size: 18px; padding: 16px; margin-top: 4px; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse {
+  0%,100% { box-shadow: 0 6px 18px rgba(255,77,109,0.35); }
+  50% { box-shadow: 0 6px 28px rgba(255,117,24,0.75); }
+}
+.link-btn { background: none; border: none; color: #b69be0; font-size: 14px; text-decoration: underline; cursor: pointer; margin-top: 18px; }
+.link-btn.armed { color: #fff; background: #ff3b5c; border-radius: 8px; padding: 6px 12px; text-decoration: none; margin-top: 0; font-weight: 700; box-shadow: 0 0 12px rgba(255,59,92,.6); }
+
+/* ===== 游戏页 ===== */
+.game-header { width: 100%; max-width: 440px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 10px; }
+.level-tag { font-size: 17px; font-weight: 700; color: #ff8a3d; }
+.game-area { width: 100%; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+.game-msg { margin-top: 12px; font-size: 15px; color: #ffd9a8; text-align: center; min-height: 22px; padding: 0 6px; }
+.tip { font-size: 14px; color: #b69be0; margin-top: 14px; text-align: center; }
+.scene-caption { font-size: 14px; color: #d9c8f5; text-align: center; margin: 8px 0 4px; line-height: 1.6; max-width: 440px; }
+
+/* 场景与元件 */
+.scene {
+  position: relative; width: 100%; max-width: 440px; aspect-ratio: 3 / 4; margin: 6px auto 0;
+  background: radial-gradient(circle at 50% 28%, #2a1840, #140a20);
+  border: 1px solid #3a2b52; border-radius: 16px; overflow: hidden; touch-action: none;
+}
+.chip { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 3px; user-select: none; -webkit-user-select: none; }
+.chip .ic { font-size: 32px; line-height: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,.45)); transition: transform .15s; }
+.chip .prop-img { display: block; pointer-events: none; -webkit-user-drag: none; user-select: none; filter: drop-shadow(0 3px 7px rgba(0,0,0,.55)); }
+.chip .lb { font-size: 11px; color: #e9dcff; background: rgba(20,10,30,.62); padding: 1px 7px; border-radius: 8px; white-space: nowrap; }
+.chip.item { cursor: grab; }
+.chip.item.dragging { cursor: grabbing; transform: translate(-50%, -50%) scale(1.12); z-index: 60; }
+.chip.clickable { cursor: pointer; }
+.chip.target::before {
+  content: ''; position: absolute; width: 56px; height: 56px; border: 2px dashed rgba(255,209,168,.3);
+  border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -1;
+}
+.chip.placed { opacity: .96; }
+.chip.hidden { display: none; }
+.chip:active .ic { transform: scale(1.08); }
+
+/* 特效 */
+.target.lit, .item.lit { animation: glow 1.4s ease-in-out infinite; }
+@keyframes glow { 0%,100% { filter: drop-shadow(0 0 4px rgba(255,180,80,.6)); } 50% { filter: drop-shadow(0 0 16px rgba(255,200,90,.95)); } }
+.target.unlocked .ic { filter: drop-shadow(0 0 10px rgba(120,255,160,.8)); }
+.target.done .ic { filter: drop-shadow(0 0 12px rgba(255,210,90,.9)); }
+.target.open .ic { filter: drop-shadow(0 0 14px rgba(255,120,200,.9)); }
+.target.glow .ic { filter: drop-shadow(0 0 18px rgba(255,150,40,.95)); }
+.bottle.r .ic { filter: drop-shadow(0 0 8px rgba(255,80,80,.85)); }
+.bottle.o .ic { filter: drop-shadow(0 0 8px rgba(255,150,40,.85)); }
+.bottle.y .ic { filter: drop-shadow(0 0 8px rgba(255,220,60,.85)); }
+.bottle.rainbow .ic { filter: drop-shadow(0 0 14px rgba(255,120,220,.95)); animation: glow 1.2s ease-in-out infinite; }
+.scene.fly::after {
+  content: '✨ Happy Birthday 玉楠 ✨'; position: absolute; top: 44%; left: 0; right: 0; text-align: center;
+  font-size: 22px; font-weight: 800; color: #ffd9a8; text-shadow: 0 0 12px rgba(255,117,24,.8);
+  animation: rise 1.6s ease-out; pointer-events: none;
+}
+@keyframes rise { 0% { opacity: 0; transform: translateY(20px) scale(.8); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+
+/* ===== 糖果插画 + 备注 ===== */
+.card-title { font-size: 22px; color: #ff8a3d; margin: 40px 0 18px; text-align: center; }
+.candy-name { font-size: 20px; font-weight: 800; color: #ffd166; text-align: center; }
+.candy-box {
+  width: 100%; max-width: 300px; padding: 22px; border-radius: 18px; margin-top: 14px;
+  background: linear-gradient(135deg, #2a1840, #160d22); border: 1px solid #4a3a63;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 30px rgba(138,43,226,0.35);
+}
+.candy-svg { width: 200px; height: 120px; }
+.candy-desc { margin-top: 14px; font-size: 15px; color: #d9c8f5; text-align: center; max-width: 300px; line-height: 1.7; }
+.candy-note {
+  margin-top: 16px; font-size: 16px; color: #ffd9a8; text-align: center;
+  padding: 8px 16px; border: 1px dashed #ff7518; border-radius: 10px;
+}
+
+/* ===== 我的糖果 ===== */
+.card-list { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 14px; }
+.mini-card { background: #1f1233; border: 1px solid #4a3a63; border-radius: 14px; padding: 14px; display: flex; align-items: center; gap: 14px; cursor: pointer; }
+.mini-card:active { transform: scale(0.99); }
+.mini-card .candy-svg { width: 96px; height: 58px; flex: none; }
+.mc-info { font-size: 14px; line-height: 1.6; }
+.mc-name { color: #ffd166; font-weight: 700; }
+.mc-desc { color: #d9c8f5; }
+.mc-note { color: #ffd9a8; font-weight: 700; margin-top: 4px; }
+.mc-lv { color: #b69be0; font-size: 12px; margin-top: 2px; }
+
+/* ===== 结局 ===== */
+.ending-card { width: 100%; max-width: 360px; border-radius: 18px; overflow: hidden; box-shadow: 0 10px 30px rgba(138,43,226,0.4); }
+.ending-card svg { width: 100%; height: auto; display: block; }
+
+/* ===== 结局视频窗口 ===== */
+.video-section { width: 100%; max-width: 360px; margin-top: 22px; }
+.video-title { font-size: 16px; color: #ffd166; text-align: center; margin-bottom: 10px; font-weight: 700; }
+.video-wrap {
+  border-radius: 16px; overflow: hidden; background: #000;
+  border: 1px solid #4a3a63; box-shadow: 0 10px 30px rgba(138,43,226,0.4);
+}
+.video-wrap video { display: block; width: 100%; height: auto; }
+
+/* ===== 第 1 关：记忆翻牌 ===== */
+.memory-grid {
+  width: 100%; max-width: 440px; display: grid;
+  grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px auto 0;
+}
+.mem-card {
+  aspect-ratio: 1 / 1; border-radius: 14px; cursor: pointer; position: relative;
+  background: #1f1233; border: 1px solid #4a3a63; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .15s, box-shadow .2s;
+}
+.mem-card:active { transform: scale(0.96); }
+.mem-card.flipped { background: linear-gradient(135deg, #2a1840, #160d22); border-color: #ff7518; box-shadow: 0 0 14px rgba(255,117,24,.45); }
+.mem-card.matched { opacity: .55; border-color: #7c5cff; }
+.mem-face { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+.mem-face.back { display: flex; }
+.mem-face.front { display: none; }
+.mem-card.flipped .mem-face.back { display: none; }
+.mem-card.flipped .mem-face.front { display: flex; }
+
+/* ===== 第 2 关：接南瓜 ===== */
+.pumpkin-wrap {
+  position: relative; width: 100%; max-width: 440px; height: 62vh; min-height: 380px;
+  margin: 10px auto 0; border-radius: 16px; overflow: hidden; touch-action: none;
+  background: radial-gradient(circle at 50% 24%, #2a1840, #140a20);
+  border: 1px solid #3a2b52;
+}
+.pk-score {
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  z-index: 5; font-size: 15px; font-weight: 700; color: #ffb877;
+  background: rgba(20,10,30,.6); padding: 6px 14px; border-radius: 18px;
+  border: 1px solid rgba(255,117,24,.4);
+}
+.pumpkin {
+  position: absolute; top: -14%; font-size: 34px; line-height: 1; cursor: pointer;
+  user-select: none; -webkit-user-select: none; filter: drop-shadow(0 3px 6px rgba(0,0,0,.5));
+  animation: fall 3.2s linear forwards;
+}
+@keyframes fall { to { top: 106%; } }
+
+/* ===== 第6关 问答 ===== */
+.quiz-wrap { max-width: 460px; margin: 0 auto; }
+.quiz-prog { text-align: center; color: #b69be0; font-size: 14px; margin-bottom: 6px; }
+.quiz-q { font-size: 20px; color: #ffe9c7; text-align: center; margin: 10px 4px 18px; line-height: 1.45; font-weight: 600; }
+.quiz-opts { display: flex; flex-direction: column; gap: 12px; }
+.quiz-opt {
+  background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.18);
+  color: #ffe9c7; font-size: 17px; padding: 14px 16px; border-radius: 14px;
+  cursor: pointer; transition: transform .12s, background .15s, border-color .15s; text-align: left;
+}
+.quiz-opt:active { transform: scale(0.98); }
+.quiz-opt.correct { background: rgba(90,209,122,0.25); border-color: #5ad17a; color: #d6ffd9; }
+.quiz-opt.wrong { background: rgba(255,90,90,0.22); border-color: #ff6b6b; animation: shake .4s; }
+.quiz-opt.done { pointer-events: none; opacity: 0.72; }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+/* ===== 第 8 关续：时代少年团认人题 ===== */
+.tnt-wrap { width: 100%; max-width: 460px; margin: 0 auto; }
+.tnt-q { font-size: 20px; color: #ffe9c7; text-align: center; margin: 8px 4px 16px; line-height: 1.45; font-weight: 600; }
+.tnt-q b { color: #ffb3c1; }
+.tnt-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.tnt-photo {
+  position: relative; background: rgba(255,255,255,.06); border: 2px solid rgba(255,255,255,.18);
+  border-radius: 14px; overflow: hidden; cursor: pointer; padding: 0; color: #ffe9c7;
+  transition: transform .12s, border-color .15s, box-shadow .2s;
+}
+.tnt-photo img { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #2a1840; }
+.tnt-photo.broken img { visibility: hidden; }
+.tnt-photo .tnt-name { display: block; font-size: 15px; padding: 8px 6px; }
+.tnt-photo:active { transform: scale(0.98); }
+.tnt-photo.correct { border-color: #5ad17a; box-shadow: 0 0 16px rgba(90,209,122,.6); }
+.tnt-photo.wrong { border-color: #ff6b6b; animation: shake .4s; }
+.tnt-photo.linked { border-color: #ffb3c1; box-shadow: 0 0 14px rgba(255,179,193,.5); }
+.tnt-photo .tnt-link {
+  position: absolute; left: 6px; bottom: 38px; background: rgba(255,179,193,.92); color: #2a1840;
+  font-size: 13px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+}
+.tnt-names { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 14px; }
+.tnt-name-btn {
+  background: rgba(255,255,255,.06); border: 2px solid rgba(255,255,255,.18); color: #ffe9c7;
+  font-size: 16px; padding: 10px 16px; border-radius: 14px; cursor: pointer; transition: transform .12s, border-color .15s;
+}
+.tnt-name-btn:active { transform: scale(0.97); }
+.tnt-name-btn.pending { border-color: #ffb3c1; background: rgba(255,179,193,.2); }
+.tnt-name-btn.used { opacity: .4; pointer-events: none; }
+.tnt-empty { max-width: 360px; margin: 30px auto; text-align: center; color: #d9c8f5; font-size: 15px; line-height: 1.8; }
+
+/* ===== 第 3 关：点亮南瓜灯（Simon）===== */
+.simon-wrap { width: 100%; max-width: 440px; margin: 12px auto 0; display: flex; flex-direction: column; align-items: center; }
+.simon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; width: 100%; max-width: 320px; margin-top: 8px; }
+.simon-btn {
+  aspect-ratio: 1 / 1; border-radius: 18px; border: 2px solid rgba(255,255,255,.12);
+  background: #1f1233; cursor: pointer; font-size: 44px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .12s, box-shadow .2s, background .15s; position: relative; overflow: hidden;
+}
+.simon-btn::before { content: ''; position: absolute; inset: 0; background: var(--c); opacity: .14; }
+.simon-btn.on { transform: scale(1.04); box-shadow: 0 0 26px 4px var(--c); }
+.simon-btn.on::before { opacity: .85; }
+.simon-btn:active { transform: scale(0.96); }
+.simon-status { margin-top: 16px; font-size: 16px; color: #ffd9a8; text-align: center; min-height: 24px; font-weight: 600; }
+
+/* ===== 第 4 关：幽灵捉迷藏 ===== */
+.ghost-grid { width: 100%; max-width: 440px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px auto 0; }
+.ghost-cell {
+  aspect-ratio: 1 / 1; border-radius: 14px; background: #1f1233; border: 1px solid #4a3a63;
+  display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer;
+  transition: transform .12s, background .2s;
+}
+.ghost-cell:active { transform: scale(0.95); }
+.ghost-cell.open { background: linear-gradient(135deg, #2a1840, #160d22); }
+.ghost-cell.hit { border-color: #9be7ff; box-shadow: 0 0 14px rgba(155,231,255,.6); background: rgba(155,231,255,.12); }
+.ghost-cell.miss { border-color: #ff6b6b; }
+
+/* ===== 第 5 关：打蝙蝠 ===== */
+.bat-wrap {
+  position: relative; width: 100%; max-width: 440px; height: 62vh; min-height: 380px;
+  margin: 10px auto 0; border-radius: 16px; overflow: hidden; touch-action: none;
+  background: radial-gradient(circle at 50% 24%, #2a1840, #140a20);
+  border: 1px solid #3a2b52;
+}
+.bat-score {
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 5;
+  font-size: 15px; font-weight: 700; color: #c79bff;
+  background: rgba(20,10,30,.6); padding: 6px 14px; border-radius: 18px; border: 1px solid rgba(199,125,255,.4);
+}
+.bat {
+  position: absolute; font-size: 32px; line-height: 1; cursor: pointer;
+  user-select: none; -webkit-user-select: none; filter: drop-shadow(0 3px 6px rgba(0,0,0,.5));
+  animation: pop 1.4s ease-out forwards;
+}
+.bat.boom { animation: boom .2s ease-out forwards; }
+@keyframes pop { 0% { opacity: 0; transform: scale(.4); } 18% { opacity: 1; transform: scale(1.1); } 82% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(.8); } }
+@keyframes boom { to { transform: scale(1.6); opacity: 0; } }
+
+/* ===== 第 6 关：南瓜快跑（接糖躲骷髅）===== */
+.run-wrap {
+  position: relative; width: 100%; max-width: 440px; height: 64vh; min-height: 400px;
+  margin: 10px auto 0; border-radius: 16px; overflow: hidden; touch-action: none;
+  background: radial-gradient(circle at 50% 24%, #2a1840, #140a20);
+  border: 1px solid #3a2b52;
+}
+.run-score {
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 5;
+  font-size: 15px; font-weight: 700; color: #ffb877;
+  background: rgba(20,10,30,.6); padding: 6px 14px; border-radius: 18px; border: 1px solid rgba(255,117,24,.4);
+}
+.run-paddle {
+  position: absolute; bottom: 14px; left: 50%; width: 52px; height: 52px; margin-left: -26px;
+  font-size: 40px; line-height: 52px; text-align: center; z-index: 4;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,.5)); user-select: none; -webkit-user-select: none;
+}
+.run-item {
+  position: absolute; top: 0; width: 40px; height: 40px; margin-left: -20px;
+  font-size: 32px; line-height: 40px; text-align: center; z-index: 3;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,.5)); user-select: none; -webkit-user-select: none;
+}
+.run-item.bad { filter: drop-shadow(0 0 8px rgba(255,80,80,.7)); }
+
+/* ===== 第 7 关：魔法记忆阵 ===== */
+.magic-wrap { width: 100%; max-width: 440px; margin: 8px auto 0; display: flex; flex-direction: column; align-items: center; }
+.magic-status { font-size: 16px; color: #ffd9a8; text-align: center; min-height: 24px; font-weight: 600; margin-bottom: 12px; }
+.magic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 320px; }
+.magic-cell {
+  aspect-ratio: 1 / 1; border-radius: 14px; background: #1f1233; border: 1px solid #4a3a63;
+  cursor: pointer; transition: transform .12s, box-shadow .2s, background .2s;
+}
+.magic-cell:active { transform: scale(0.95); }
+.magic-cell.lit { background: linear-gradient(135deg, #ffb347, #ff7518); box-shadow: 0 0 22px rgba(255,150,40,.85); border-color: #ffd166; }
+.magic-cell.hit { background: rgba(179,136,255,.25); border-color: #b388ff; box-shadow: 0 0 16px rgba(179,136,255,.6); }
+
+/* ===== 关卡失败弹窗 ===== */
+.fail-overlay {
+  position: fixed; inset: 0; z-index: 1000; display: none;
+  align-items: center; justify-content: center; padding: 20px;
+  background: rgba(10,6,18,0.78); backdrop-filter: blur(4px);
+}
+.fail-overlay.show { display: flex; }
+.fail-box {
+  width: 100%; max-width: 320px; background: #1f1233; border: 1px solid #4a3a63;
+  border-radius: 16px; padding: 22px; text-align: center; box-shadow: 0 16px 40px rgba(0,0,0,.5);
+}
+.fail-box h3 { color: #ff8a3d; font-size: 19px; margin-bottom: 8px; }
+.fail-note { color: #d9c8f5; font-size: 14px; margin-bottom: 14px; }
+
+/* ===== 限时计时器 ===== */
+.lv-timer {
+  position: absolute; top: 10px; right: 10px; z-index: 5; font-size: 15px; font-weight: 700;
+  color: #ffd166; background: rgba(20,10,30,.6); padding: 6px 12px; border-radius: 18px;
+  border: 1px solid rgba(255,209,102,.4);
+}
+
+/* ===== 第 2 关：连连看 ===== */
+.link-grid { width: 100%; max-width: 440px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px auto 0; }
+.link-tile {
+  aspect-ratio: 1 / 1; border-radius: 14px; background: #1f1233; border: 1px solid #4a3a63;
+  display: flex; align-items: center; justify-content: center; font-size: 30px; cursor: pointer;
+  transition: transform .12s, box-shadow .2s, opacity .3s, background .2s; user-select: none; -webkit-user-select: none;
+}
+.link-tile:active { transform: scale(0.95); }
+.link-tile.pick { border-color: #ff5db1; box-shadow: 0 0 14px rgba(255,93,177,.6); background: rgba(255,93,177,.15); }
+.link-tile.bad { border-color: #ff6b6b; box-shadow: 0 0 12px rgba(255,107,107,.5); }
+.link-tile.gone { opacity: 0; transform: scale(0.6); pointer-events: none; }
+
+/* ===== 第 4 关：挖出小幽灵 ===== */
+.dig-wrap { width: 100%; max-width: 440px; margin: 10px auto 0; display: flex; flex-direction: column; align-items: center; }
+.dig-info { font-size: 15px; color: #ffd9a8; margin-bottom: 10px; text-align: center; }
+.dig-info b { color: #ff8a3d; }
+.dig-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 100%; max-width: 320px; }
+.dig-cell {
+  aspect-ratio: 1 / 1; border-radius: 12px; background: #241636; border: 1px solid #4a3a63;
+  display: flex; align-items: center; justify-content: center; font-size: 26px; cursor: pointer;
+  transition: transform .12s, box-shadow .2s, background .2s; user-select: none; -webkit-user-select: none;
+}
+.dig-cell:active { transform: scale(0.95); }
+.dig-cell.dug { cursor: default; }
+.dig-cell.ghost { background: rgba(155,231,255,.2); border-color: #9be7ff; box-shadow: 0 0 14px rgba(155,231,255,.6); }
+.dig-cell.decoy { background: rgba(255,117,24,.15); border-color: #ff7518; }
+.dig-cell.empty { background: #160d22; color: #5a4a72; }
+
+/* ===== 第 7 关：配置奶茶 ===== */
+.milk-wrap { width: 100%; max-width: 440px; margin: 10px auto 0; display: flex; flex-direction: column; align-items: center; }
+.milk-hint { font-size: 13px; color: #b69be0; margin-bottom: 12px; text-align: center; }
+.milk-cup {
+  width: 120px; height: 150px; border: 3px solid #ffb3c1; border-radius: 14px 14px 26px 26px;
+  background: rgba(255,255,255,.06); position: relative; overflow: hidden; cursor: pointer;
+  display: flex; align-items: flex-end; justify-content: center; margin-bottom: 6px;
+  box-shadow: 0 0 18px rgba(255,179,193,.35); user-select: none;
+}
+.milk-cup.shake { animation: cupShake .28s ease; }
+@keyframes cupShake {
+  0% { transform: rotate(0); } 25% { transform: rotate(-9deg); }
+  50% { transform: rotate(0); } 75% { transform: rotate(9deg); } 100% { transform: rotate(0); }
+}
+.milk-liquid {
+  width: 100%; min-height: 0; background: linear-gradient(180deg,#ffe0b2,#ffb3c1);
+  display: flex; flex-wrap: wrap; align-content: flex-end; justify-content: center;
+  font-size: 20px; line-height: 1.1; padding: 4px; box-sizing: border-box; transition: height .18s;
+}
+.milk-shake { font-size: 12px; color: #ffd9a8; margin-bottom: 8px; }
+.milk-fill { font-size: 13px; color: #d9c8f5; min-height: 20px; margin-bottom: 10px; text-align: center; }
+.milk-palette { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; max-width: 360px; }
+.milk-ing {
+  background: #1f1233; border: 1px solid #4a3a63; border-radius: 14px; padding: 10px 4px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer;
+  transition: transform .12s, box-shadow .2s, border-color .2s; color: #ffe9c7;
+}
+.milk-ing:active { transform: scale(0.96); }
+.milk-ing .mi { font-size: 30px; }
+.milk-ing .mn { font-size: 12px; color: #d9c8f5; }
+.milk-ing.on { border-color: #ffb3c1; background: rgba(255,179,193,.18); box-shadow: 0 0 14px rgba(255,179,193,.5); }
+.milk-done { margin-top: 16px; max-width: 240px; }
+.milk-result {
+  margin-top: 14px; width: 100%; max-width: 320px; text-align: center;
+  background: rgba(31,18,51,.6); border: 1px solid #4a3a63; border-radius: 14px; padding: 12px 14px;
+}
+.milk-result .mr-title { font-size: 17px; color: #ffd9a8; margin-bottom: 6px; }
+.milk-result .mr-title b { font-size: 22px; color: #ffb3c1; }
+.milk-result .mr-line { font-size: 13px; color: #d9c8f5; line-height: 1.7; }
+

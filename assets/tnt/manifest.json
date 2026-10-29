@@ -1,0 +1,67 @@
+{
+  "members": [
+    {
+      "id": "dingchengxin",
+      "name": "丁程鑫",
+      "photos": [
+        "dingchengxin/13bc7801bfb208798a326ff6dde17d1d.jpg",
+        "dingchengxin/3822b9089ec6c36f35f6438661b5bc96.jpg",
+        "dingchengxin/4c7fcf332dbed08c9b00f31df6df4e2f.jpg"
+      ]
+    },
+    {
+      "id": "hejunlin",
+      "name": "贺峻霖",
+      "photos": [
+        "hejunlin/240e01412b891cf0772984b9d8aafcd4.jpg",
+        "hejunlin/3c54d63bf169f40f3fcbbebcd647174a.jpg",
+        "hejunlin/d00c4a7d2f8f1d02556a511dacf07975.jpg"
+      ]
+    },
+    {
+      "id": "liuyaowen",
+      "name": "刘耀文",
+      "photos": [
+        "liuyaowen/4341a101c96021d64161a58e49e844aa.jpg",
+        "liuyaowen/4712d25f2122b82e83494464d8aee8e6.jpg",
+        "liuyaowen/557334fa66e3a207fcb67df9fd805281.jpg"
+      ]
+    },
+    {
+      "id": "majiaqi",
+      "name": "马嘉祺",
+      "photos": [
+        "majiaqi/492b3967f423af6310a43b3410418eb5.jpg",
+        "majiaqi/e278cf03bb453c378f129ed8e60f4514.jpg",
+        "majiaqi/f68c9782397f0cdb3bff35925b9df7f6.jpeg"
+      ]
+    },
+    {
+      "id": "songyaxuan",
+      "name": "宋亚轩",
+      "photos": [
+        "songyaxuan/210816720057dc14cb77c82484eb889b.jpg",
+        "songyaxuan/8698527bdf23379d16569996e12ee0c7.jpg",
+        "songyaxuan/c06700eb8c296a3c58cf4d0265f5e97a.jpg"
+      ]
+    },
+    {
+      "id": "yanhaochun",
+      "name": "严浩翔",
+      "photos": [
+        "yanhaochun/5f4a1a0d2ccfe1ac9b0f3695ae0445d7.jpg",
+        "yanhaochun/66f33d25c02b6121fd31684c884cf33d.jpg",
+        "yanhaochun/bb2716d5325f28a14bbbd919414cfaf4.jpg"
+      ]
+    },
+    {
+      "id": "zhangzhenyuan",
+      "name": "张真源",
+      "photos": [
+        "zhangzhenyuan/16e88f641cebfe7fdf93f7669d038b1d.jpg",
+        "zhangzhenyuan/52eca12e973aa705951982c6b6165a29.jpg",
+        "zhangzhenyuan/ee1ff7c47d3c1e48b4d55593182d3992.jpg"
+      ]
+    }
+  ]
+}
