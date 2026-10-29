@@ -386,7 +386,20 @@
     }
     btns.forEach(function (b, i) { b.addEventListener('click', function () { tap(i); }); });
     msg('跟着亮起的南瓜灯，记住越来越长的咒语～从 ' + startLen + ' 步开始，记到 ' + goalLen + ' 步就过关！某一步记错只重来这一步，不退回 4 步。');
-    newSeq();
+    // 开场先提示「注意看闪亮顺序」并 3 秒倒计时，再播放序列
+    locked = true;
+    var cd = 3;
+    status.textContent = '注意看闪亮顺序！' + cd;
+    var cdTimer = setInterval(function () {
+      cd--;
+      if (cd > 0) {
+        status.textContent = '注意看闪亮顺序！' + cd;
+      } else {
+        clearInterval(cdTimer);
+        status.textContent = '开始！';
+        newSeq();
+      }
+    }, 1000);
   }
 
   // ---------- 第 4 关：挖出小幽灵 ----------
