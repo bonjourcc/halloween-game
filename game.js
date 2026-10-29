@@ -429,6 +429,20 @@
       var ov = d.some(function (x) { return ghostCells.indexOf(x) >= 0; });
       if (!ov) { d.forEach(function (x) { decoy[x] = true; }); break; }
     }
+    // 每格的"周围幽灵数"（扫雷式提示）：相邻 8 格中幽灵数量
+    function neighborsOf(idx) {
+      var r = Math.floor(idx / COLS), c = idx % COLS, a = [];
+      for (var dr = -1; dr <= 1; dr++) for (var dc = -1; dc <= 1; dc++) {
+        if (dr === 0 && dc === 0) continue;
+        var nr = r + dr, nc = c + dc;
+        if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS) a.push(nr * COLS + nc);
+      }
+      return a;
+    }
+    var nbr = [];
+    for (var k = 0; k < total; k++) {
+      nbr[k] = neighborsOf(k).filter(function (x) { return ghostCells.indexOf(x) >= 0; }).length;
+    }
     var wrap = document.createElement('div');
     wrap.className = 'dig-wrap';
     var info = document.createElement('div');
@@ -454,16 +468,18 @@
           if (done || c.classList.contains('dug')) return;
           c.classList.add('dug');
           chances--;
+          var nb = nbr[idx];
+          var badge = '<span class="nb' + (nb ? '' : ' nb0') + '">' + nb + '</span>';
           if (ghostCells.indexOf(idx) >= 0) {
-            c.classList.add('ghost'); c.textContent = '👻';
+            c.classList.add('ghost'); c.innerHTML = '👻' + badge;
             found++;
             msg('挖到幽灵啦！(' + found + '/' + GOAL + ')');
           } else if (decoy[idx]) {
             c.classList.add('decoy');
-            c.textContent = ['🎃', '🦇', '🕸️', '🌙'][Math.floor(Math.random() * 4)];
+            c.innerHTML = ['🎃', '🦇', '🕸️', '🌙'][Math.floor(Math.random() * 4)] + badge;
             msg('是别的图案，不是幽灵~');
           } else {
-            c.classList.add('empty'); c.textContent = '·';
+            c.classList.add('empty'); c.innerHTML = '·' + badge;
             msg('空空的，继续挖~');
           }
           renderInfo();
@@ -475,7 +491,7 @@
         });
       })(i);
     }
-    msg('挖开格子找小幽灵！10 次机会内挖出 ' + GOAL + ' 只小幽灵就过关~');
+    msg('挖开格子找小幽灵！每格角落的数字=周围一圈的幽灵数，10 次机会内挖出 ' + GOAL + ' 只就过关~');
   }
 
   // ---------- 第 5 关：打蝙蝠（15s 限时）----------
