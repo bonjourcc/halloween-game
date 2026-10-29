@@ -112,7 +112,7 @@
     },
     {
       id: 4, name: '挖出小幽灵',
-      scene: '泥地下藏着一只小幽灵（占 3×2 格）。你有 8 次挖掘机会，把组成幽灵的 6 格全挖出来就过关，机会用完还没挖全就算失败！',
+      scene: '泥地下藏着小幽灵，分散在 12 个格子里。你有 10 次挖掘机会，挖出 5 只小幽灵就过关，机会用完还没挖全就算失败！',
       candy: { id: 'dig', name: '幽灵糖果', desc: '藏得再深，也被你挖到。', color: '#9be7ff' }
     },
     {
@@ -421,9 +421,9 @@
     wrap.appendChild(grid);
     area.appendChild(wrap);
 
-    var found = 0, chances = 8, done = false;
+    var found = 0, chances = 10, done = false;
     function renderInfo() {
-      info.innerHTML = '👻 已挖出 <b>' + found + '/' + GOAL + '</b> ｜ 剩余机会 <b>' + chances + '/8</b>';
+      info.innerHTML = '👻 已挖出 <b>' + found + '/' + GOAL + '</b> ｜ 剩余机会 <b>' + chances + '/10</b>';
     }
     renderInfo();
 
@@ -457,7 +457,7 @@
         });
       })(i);
     }
-    msg('挖开格子找小幽灵！8 次机会内挖出 ' + GOAL + ' 只小幽灵就过关~');
+    msg('挖开格子找小幽灵！10 次机会内挖出 ' + GOAL + ' 只小幽灵就过关~');
   }
 
   // ---------- 第 5 关：打蝙蝠（15s 限时）----------
