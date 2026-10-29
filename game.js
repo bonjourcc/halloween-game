@@ -661,16 +661,18 @@
     wrap.className = 'milk-wrap';
     wrap.innerHTML = '<div class="milk-hint">自由调配专属奶茶：点配料加进杯子，点杯子摇匀，最后点「评分」🧋</div>';
 
+    // 摇摇计数（放在杯子上方，不遮挡奶茶）
+    var cupShake = document.createElement('div');
+    cupShake.className = 'milk-shake';
+    cupShake.textContent = '已摇 0 下';
+    wrap.appendChild(cupShake);
+
     // 杯子（可点击 = 摇）
     var cupBox = document.createElement('div');
     cupBox.className = 'milk-cup';
     var cupLiquid = document.createElement('div');
     cupLiquid.className = 'milk-liquid';
     cupBox.appendChild(cupLiquid);
-    var cupShake = document.createElement('div');
-    cupShake.className = 'milk-shake';
-    cupShake.textContent = '已摇 0 下';
-    cupBox.appendChild(cupShake);
     wrap.appendChild(cupBox);
 
     var fillEl = document.createElement('div');
@@ -693,8 +695,6 @@
     area.appendChild(wrap);
 
     function refresh() {
-      var h = Math.min(100, cup.length / MAX * 100);
-      cupLiquid.style.height = h + '%';
       cupLiquid.innerHTML = cup.map(function (i) { return ING[i].ic; }).join('');
       cupShake.textContent = '已摇 ' + shakes + ' 下';
       fillEl.textContent = cup.length === 0
