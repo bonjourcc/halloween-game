@@ -54,8 +54,12 @@
          '<stop offset="0" stop-color="#2a1840"/><stop offset="1" stop-color="#120a1e"/></linearGradient></defs>';
     s += '<rect width="' + W + '" height="' + H + '" fill="url(#bg)"/>';
     s += '<text x="400" y="150" text-anchor="middle" font-size="68" font-weight="800" fill="#ff8a3d" font-family="sans-serif">玉楠生日快乐</text>';
-    s += '<text x="400" y="205" text-anchor="middle" font-size="26" fill="#ffd9a8" font-family="sans-serif">🎃 全部糖果，集齐所有祝福 🎂</text>';
-    var n = LEVELS.length;
+    var got = Object.keys(state.candies).length;
+    var won = [];
+    for (var l = 1; l <= TOTAL; l++) if (state.candies[l]) won.push(LEVELS[l - 1].candy);
+    var n = won.length;
+    s += '<text x="400" y="205" text-anchor="middle" font-size="26" fill="#ffd9a8" font-family="sans-serif">' +
+         (got >= TOTAL ? '🎃 全部糖果，集齐所有祝福 🎂' : ('🎃 已收集 ' + got + ' / ' + TOTAL + ' 颗糖果 🎂')) + '</text>';
     var cols = n <= 2 ? 2 : (n <= 4 ? 2 : (n <= 6 ? 3 : 4));
     var rowsN = Math.ceil(n / cols);
     var colW = 800 / (cols + 1);
@@ -65,8 +69,9 @@
       var r = Math.floor(i / cols), c = i % cols;
       var x = colW * (c + 1);
       var y = rowsN > 1 ? top + rowGap * r : (top + bot) / 2;
-      s += candyGroup(x, y, LEVELS[i].candy.color, LEVELS[i].candy.name);
+      s += candyGroup(x, y, won[i].color, won[i].name);
     }
+    if (n === 0) s += '<text x="400" y="560" text-anchor="middle" font-size="28" fill="#ffd9a8" font-family="sans-serif">还没收集到糖果，下次再战~</text>';
     s += '<text x="400" y="900" text-anchor="middle" font-size="28" fill="#ff8a3d" font-family="sans-serif">—— 来自万圣夜的生日祝福 ——</text>';
     s += '<text x="400" y="948" text-anchor="middle" font-size="20" fill="#b69be0" font-family="sans-serif">被爱包围 · 心想事成 · 快乐加倍</text>';
     s += '</svg>';
